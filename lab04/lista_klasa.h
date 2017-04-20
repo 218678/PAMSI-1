@@ -4,34 +4,28 @@
 #include <iostream>
 #include <cstdio>
 #include <stdio.h>
-#include <tchar.h>
 #include <cstdlib>
 #include <string>
 #include "interfejs.h"
 
-//Tomasz Perczyñski 226481, PAMSI œroda 14:00-16:00.
+//Tomasz Perczyï¿½ski 226481, PAMSI ï¿½roda 14:00-16:00.
 // LISTA KLASA
 using namespace std;
 
-class costam
-{
+class costam {
 	public:
 	costam* nastepny;
 	int a;
-	costam(int liczba);
+	costam(int liczba) {
+		nastepny = 0;
+		a=liczba;
+	}
 };
 
-costam::costam(int liczba)
-{
-	nastepny = 0;
-	a=liczba;
-}
-
-class lista:public interfejs
-{
+class lista: public interfejs {
 	costam* pierwszy;
 	costam* nowy;
-	
+
 	public:
 	int licznik;
 	lista();
@@ -42,6 +36,39 @@ class lista:public interfejs
 	int size();
 	void wypelnij(int ilosc);
 	void wyczysc();
+
+	int get(int idx) {
+		costam* elem1 = pierwszy;
+		costam* elem2 = nullptr;
+		for (int i=0; i<size(); i++) {
+			if (i == idx) {
+				if (elem2 != nullptr) {
+					elem2->nastepny = elem1->nastepny;
+					licznik--;
+					return elem1->a;
+				}
+			} else {
+				elem2 = elem1;
+				elem1 = elem1->nastepny;
+			}
+		}
+	}
+	void insert(int wartosc_elem, int idx) {
+		costam* _elem_1 = pierwszy;
+		costam* _elem_2 = nullptr;
+		costam* _nowy_elem = new costam(wartosc_elem);
+		for (int i=0; i<=size(); i++) {
+			if ( i == idx ) {
+				_elem_2->nastepny = _nowy_elem;
+				_nowy_elem = _elem_1;
+				licznik++;
+			} else {
+				_elem_2 = _elem_1;
+				_elem_1 = _elem_1->nastepny;
+			}
+		}
+	}
+
 };
 
 lista::lista()
@@ -68,11 +95,11 @@ void lista::wypelnij(int ilosc)
 {
 	for(int i=0; i<ilosc; i++)
 	{
-		
+
 		add(rand()%100);
 	}
 }
- 
+
 	int lista::get()
 	{
 		costam* temp=pierwszy;
@@ -80,9 +107,9 @@ void lista::wypelnij(int ilosc)
 		{
 			temp = temp -> nastepny;
 		}
-		return temp->a; 
+		return temp->a;
 	}
-	
+
 	void lista::find(int element)
 	{
 		costam* temp=pierwszy;
@@ -93,10 +120,10 @@ void lista::wypelnij(int ilosc)
 				cout << "Poszukiwany element znajduje sie w liscie."<<endl;
 				break;
 				}
-			temp = temp-> nastepny;	
-		}	
+			temp = temp-> nastepny;
+		}
 	}
-	
+
 	int lista::size()
 	{
 		return licznik;
@@ -109,7 +136,7 @@ void lista::wyswietl_liste()
 	{
 		cout << t->a<<endl;
 		t=t->nastepny;
-		
+
 	}
 }
 
